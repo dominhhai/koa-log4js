@@ -1,9 +1,24 @@
 # koa-log4js
-A wrapper for [log4js-node](https://github.com/nomiddlename/log4js-node) which support Koa logger middleware.
+A wrapper for [log4js-node](https://github.com/nomiddlename/log4js-node) which support [Koa](https://github.com/koajs/koa) logger middleware.
 Log message is forked from Express (Connect) logger [file](https://github.com/nomiddlename/log4js-node/blob/master/lib/connect-logger.js).
+
+## Note
+This branch is use to Koa v0.x & v1.x.
+To use [Koa v2.x](https://github.com/koajs/koa/tree/v2.x), please check the [v2.x](https://github.com/dominhhai/koa-log4js/tree/v2.x) branch.
 
 ## Installation
 
+#### for koa v0.x & v1.x
+```
+$ npm i --save koa-log4@1
+```
+
+#### for koa v2.x
+```
+$ npm i --save koa-log4@2
+```
+
+___The default logger is for [koa v2.x](https://github.com/koajs/koa/tree/v2.x)
 ```
 $ npm i --save koa-log4
 ```
