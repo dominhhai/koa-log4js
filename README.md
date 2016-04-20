@@ -3,8 +3,8 @@ A wrapper for [log4js-node](https://github.com/nomiddlename/log4js-node) which s
 Log message is forked from Express (Connect) logger [file](https://github.com/nomiddlename/log4js-node/blob/master/lib/connect-logger.js).
 
 ## Note
-This branch is use to Koa v0.x & v1.x.
-To use [Koa v2.x](https://github.com/koajs/koa/tree/v2.x), please check the [v2.x](https://github.com/dominhhai/koa-log4js/tree/v2.x) branch.
+This branch is use to [Koa v2.x](https://github.com/koajs/koa/tree/v2.x).
+To use Koa v0.x & v1.x, please check the [master](https://github.com/dominhhai/koa-log4js/tree/master) branch.
 
 ## Installation
 
@@ -18,7 +18,7 @@ $ npm i --save koa-log4@1
 $ npm i --save koa-log4@2
 ```
 
-___The default logger is for [koa v2.x](https://github.com/koajs/koa/tree/v2.x)
+___The default logger is for [koa v2.x](https://github.com/koajs/koa/tree/v2.x)___
 ```
 $ npm i --save koa-log4
 ```
