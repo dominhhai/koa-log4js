@@ -1,0 +1,30 @@
+{
+  "name": "koa-log4",
+  "version": "1.0.0",
+  "description": "log4js-node support Koa-middleware",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dominhhai/koa-log4js.git"
+  },
+  "keywords": [
+    "log4js",
+    "Koa",
+    "logger"
+  ],
+  "author": "Do Minh Hai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dominhhai/koa-log4js/issues"
+  },
+  "homepage": "https://github.com/dominhhai/koa-log4js#readme",
+  "dependencies": {
+    "log4js": "^0.6.35"
+  },
+  "devDependencies": {
+    "standard": "^6.0.8"
+  }
+}
