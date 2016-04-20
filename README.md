@@ -44,4 +44,8 @@ const log4js = require('koa-log4')
 app.use(log4js.koaLogger(log4js.getLogger("http"), { level: 'auto' }))
 ```
 
+## Full Example
+Check [this repo](https://github.com/dominhhai/koa-log4js-example/tree/v2.x) for full example with `Koa v2`.
+
+## Others
 See [here](https://github.com/nomiddlename/log4js-node) for more info.
