@@ -18,7 +18,7 @@ $ npm i --save koa-log4@1
 $ npm i --save koa-log4@2
 ```
 
-___The default logger is for [koa v2.x](https://github.com/koajs/koa/tree/v2.x)
+___The default logger is for [koa v2.x](https://github.com/koajs/koa/tree/v2.x)___
 ```
 $ npm i --save koa-log4
 ```
