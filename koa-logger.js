@@ -98,10 +98,10 @@ function getKoaLogger (logger4js, options) {
           thislogger.log(level, format(fmt, combined_tokens))
         }
       }
+    } else {
+      // ensure next gets always called
+      yield next()
     }
-
-    // ensure next gets always called
-    yield next()
   })
 }
 

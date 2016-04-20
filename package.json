@@ -1,6 +1,6 @@
 {
   "name": "koa-log4",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "log4js-node support Koa-middleware",
   "main": "index.js",
   "scripts": {
