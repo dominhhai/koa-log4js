@@ -135,7 +135,7 @@ function assemble_tokens (ctx, custom_tokens) {
   default_tokens.push({ token: ':date', replacement: new Date().toUTCString() })
   default_tokens.push({ token: ':referrer', replacement: ctx.headers.referer || '' })
   default_tokens.push({ token: ':http-version', replacement: ctx.req.httpVersionMajor + '.' + ctx.req.httpVersionMinor })
-  default_tokens.push({ token: ':remote-addr', replacement: ctx.headers['X-Forwarded-For'] || ctx.ip || ctx.ips ||
+  default_tokens.push({ token: ':remote-addr', replacement: ctx.headers['x-forwarded-for'] || ctx.ip || ctx.ips ||
       (ctx.socket && (ctx.socket.remoteAddress || (ctx.socket.socket && ctx.socket.socket.remoteAddress))) })
   default_tokens.push({ token: ':user-agent', replacement: ctx.headers['user-agent'] })
   default_tokens.push({ token: ':content-length', replacement: (ctx.response._headers && ctx.response._headers['content-length']) ||
