@@ -1,6 +1,5 @@
 'use strict'
 
-const co = require('co')
 const levels = require('log4js').levels
 const DEFAULT_FORMAT = ':remote-addr - -' +
   ' ":method :url HTTP/:http-version"' +
