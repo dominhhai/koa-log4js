@@ -1,6 +1,5 @@
 'use strict'
 
-const co = require('co')
 const levels = require('log4js').levels
 const DEFAULT_FORMAT = ':remote-addr - -' +
   ' ":method :url HTTP/:http-version"' +
@@ -48,12 +47,13 @@ function getKoaLogger (logger4js, options) {
   var fmt = options.format || DEFAULT_FORMAT
   var nolog = options.nolog ? createNoLogCondition(options.nolog) : null
 
-  return co.wrap(function *(ctx, next) {
+  return function *(next) {
+    var ctx = this;
     // mount safety
-    if (ctx.request._logging) return yield next()
+    if (ctx.request._logging) return yield next
 
 		// nologs
-    if (nolog && nolog.test(ctx.originalUrl)) return yield next()
+    if (nolog && nolog.test(ctx.originalUrl)) return yield next
     if (thislogger.isLevelEnabled(level) || options.level === 'auto') {
       var start = new Date()
       var writeHead = ctx.response.writeHead
@@ -78,7 +78,7 @@ function getKoaLogger (logger4js, options) {
         }
       }
 
-      yield next()
+      yield next
 			// hook on end request to emit the log entry of the HTTP request.
       ctx.response.responseTime = new Date() - start
 			// status code response level handling
@@ -100,9 +100,9 @@ function getKoaLogger (logger4js, options) {
       }
     } else {
       // ensure next gets always called
-      yield next()
+      yield next
     }
-  })
+  }
 }
 
 /**
