@@ -165,7 +165,7 @@ function assembleTokens (ctx, customTokens) {
   })
 
   return arrayUniqueTokens(customTokens.concat(defaultTokens))
-};
+}
 
 /**
  * Return formatted log line.
