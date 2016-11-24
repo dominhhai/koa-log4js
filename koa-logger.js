@@ -109,7 +109,13 @@ function getKoaLogger (logger4js, options) {
  * Adds custom {token, replacement} objects to defaults, overwriting the defaults if any tokens clash
  *
  * @param  {Koa Context} ctx
- * @param  {Array} customTokens [{ token: string-or-regexp, replacement: string-or-replace-function }]
+ * @param  {Array} customTokens [
+ *                      {
+ *                        token: string-or-regexp,
+ *                        replacement: string-or-replace-function,
+ *                        content: a replace function with `ctx`
+ *                      }
+ *                 ]
  * @return {Array}
  */
 function assembleTokens (ctx, customTokens) {
@@ -162,6 +168,14 @@ function assembleTokens (ctx, customTokens) {
       ? (ctx.response._headers[field.toLowerCase()] || ctx.response.__headers[field])
       : (ctx.response.__headers && ctx.response.__headers[field])
     }
+  })
+
+  customTokens = customTokens.map(function (token) {
+    if (token.content && typeof token.content === 'function') {
+      token.replacement = token.content(ctx)
+      delete token.content
+    }
+    return token
   })
 
   return arrayUniqueTokens(customTokens.concat(defaultTokens))
