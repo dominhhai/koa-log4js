@@ -1,6 +1,5 @@
 'use strict'
 
-const co = require('co')
 const levels = require('log4js').levels
 const DEFAULT_FORMAT = ':remote-addr - -' +
   ' ":method :url HTTP/:http-version"' +
@@ -48,27 +47,27 @@ function getKoaLogger (logger4js, options) {
   var fmt = options.format || DEFAULT_FORMAT
   var nolog = options.nolog ? createNoLogCondition(options.nolog) : null
 
-  return co.wrap(function *(ctx, next) {
+  return async (ctx, next) => {
     // mount safety
-    if (ctx.request._logging) return yield next()
+    if (ctx.request._logging) return await next()
 
-		// nologs
-    if (nolog && nolog.test(ctx.originalUrl)) return yield next()
+    // nologs
+    if (nolog && nolog.test(ctx.originalUrl)) return await next()
     if (thislogger.isLevelEnabled(level) || options.level === 'auto') {
       var start = new Date()
       var writeHead = ctx.response.writeHead
 
-			// flag as logging
+      // flag as logging
       ctx.request._logging = true
 
-			// proxy for statusCode.
+      // proxy for statusCode.
       ctx.response.writeHead = function (code, headers) {
         ctx.response.writeHead = writeHead
         ctx.response.writeHead(code, headers)
         ctx.response.__statusCode = code
         ctx.response.__headers = headers || {}
 
-				// status code response level handling
+        // status code response level handling
         if (options.level === 'auto') {
           level = levels.INFO
           if (code >= 300) level = levels.WARN
@@ -78,10 +77,10 @@ function getKoaLogger (logger4js, options) {
         }
       }
 
-      yield next()
-			// hook on end request to emit the log entry of the HTTP request.
+      await next()
+      // hook on end request to emit the log entry of the HTTP request.
       ctx.response.responseTime = new Date() - start
-			// status code response level handling
+      // status code response level handling
       if (ctx.res.statusCode && options.level === 'auto') {
         level = levels.INFO
         if (ctx.res.statusCode >= 300) level = levels.WARN
@@ -100,9 +99,9 @@ function getKoaLogger (logger4js, options) {
       }
     } else {
       // ensure next gets always called
-      yield next()
+      await next()
     }
-  })
+  }
 }
 
 /**
