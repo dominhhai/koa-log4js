@@ -172,7 +172,6 @@ function assembleTokens (ctx, customTokens) {
   customTokens = customTokens.map(function (token) {
     if (token.content && typeof token.content === 'function') {
       token.replacement = token.content(ctx)
-      delete token.content
     }
     return token
   })
