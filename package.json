@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/dominhhai/koa-log4js#readme",
   "dependencies": {
-    "log4js": "^1.0.1"
+    "log4js": "^2.3.12"
   },
   "devDependencies": {
     "standard": "^8.5.0"
