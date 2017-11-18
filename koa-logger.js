@@ -42,20 +42,26 @@ function getKoaLogger (logger4js, options) {
     options = {}
   }
 
-  var thislogger = logger4js
-  var level = levels.toLevel(options.level, levels.INFO)
-  var fmt = options.format || DEFAULT_FORMAT
-  var nolog = options.nolog ? createNoLogCondition(options.nolog) : null
+  let thislogger = logger4js
+  let level = levels.getLevel(options.level, levels.INFO)
+  let fmt = options.format || DEFAULT_FORMAT
+  let nolog = options.nolog ? createNoLogCondition(options.nolog) : null
 
   return async (ctx, next) => {
     // mount safety
-    if (ctx.request._logging) return await next()
+    if (ctx.request._logging) {
+      await next()
+      return
+    }
 
     // nologs
-    if (nolog && nolog.test(ctx.originalUrl)) return await next()
+    if (nolog && nolog.test(ctx.originalUrl)) {
+      await next()
+      return
+    }
     if (thislogger.isLevelEnabled(level) || options.level === 'auto') {
-      var start = new Date()
-      var writeHead = ctx.response.writeHead
+      let start = new Date()
+      let writeHead = ctx.response.writeHead
 
       // flag as logging
       ctx.request._logging = true
@@ -73,7 +79,7 @@ function getKoaLogger (logger4js, options) {
           if (code >= 300) level = levels.WARN
           if (code >= 400) level = levels.ERROR
         } else {
-          level = levels.toLevel(options.level, levels.INFO)
+          level = levels.getLevel(options.level, levels.INFO)
         }
       }
 
@@ -87,9 +93,9 @@ function getKoaLogger (logger4js, options) {
         if (ctx.res.statusCode >= 400) level = levels.ERROR
       }
       if (thislogger.isLevelEnabled(level)) {
-        var combinedTokens = assembleTokens(ctx, options.tokens || [])
+        let combinedTokens = assembleTokens(ctx, options.tokens || [])
         if (typeof fmt === 'function') {
-          var line = fmt(ctx, function (str) {
+          let line = fmt(ctx, function (str) {
             return format(str, combinedTokens)
           })
           if (line) thislogger.log(level, line)
@@ -118,18 +124,18 @@ function getKoaLogger (logger4js, options) {
  * @return {Array}
  */
 function assembleTokens (ctx, customTokens) {
-  var arrayUniqueTokens = function (array) {
+  let arrayUniqueTokens = function (array) {
     let a = array.concat()
     for (let i = 0; i < a.length; ++i) {
       for (let j = i + 1; j < a.length; ++j) {
-        if (a[i].token == a[j].token) { // not === because token can be regexp object
+        if (a[i].token === a[j].token) { // not === because token can be regexp object
           a.splice(j--, 1)
         }
       }
     }
     return a
   }
-  var defaultTokens = []
+  let defaultTokens = []
   defaultTokens.push({ token: ':url', replacement: ctx.originalUrl })
   defaultTokens.push({ token: ':protocol', replacement: ctx.protocol })
   defaultTokens.push({ token: ':hostname', replacement: ctx.hostname })
@@ -225,7 +231,7 @@ function format (str, tokens) {
  *         SAME AS "\\.jpg|\\.png|\\.gif"
  */
 function createNoLogCondition (nolog) {
-  var regexp = null
+  let regexp = null
   if (nolog) {
     if (nolog instanceof RegExp) {
       regexp = nolog
@@ -236,7 +242,7 @@ function createNoLogCondition (nolog) {
     }
 
     if (Array.isArray(nolog)) {
-      var regexpsAsStrings = nolog.map((o) => (o.source ? o.source : o))
+      let regexpsAsStrings = nolog.map((o) => (o.source ? o.source : o))
       regexp = new RegExp(regexpsAsStrings.join('|'))
     }
   }
