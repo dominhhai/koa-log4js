@@ -1,6 +1,6 @@
 {
   "name": "koa-log4",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "log4js-node support Koa-middleware",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/dominhhai/koa-log4js#readme",
   "dependencies": {
-    "log4js": "^2.3.12"
+    "log4js": "^3.0.6"
   },
   "devDependencies": {
     "standard": "^8.5.0"
