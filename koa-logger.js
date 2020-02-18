@@ -5,6 +5,15 @@ const DEFAULT_FORMAT = ':remote-addr - -' +
   ' ":method :url HTTP/:http-version"' +
   ' :status :content-length ":referrer"' +
   ' ":user-agent"'
+
+const DEFAULT_LEVEL_MAPPER = function (statusCode) {
+  if (statusCode >= 400)
+    return levels.ERROR
+  if (statusCode >= 300)
+    return levels.WARN
+  return levels.INFO
+}
+
 /**
  * Log requests with the given `options` or a `format` string.
  * Use for Koa v1
@@ -46,6 +55,7 @@ function getKoaLogger (logger4js, options) {
   let level = levels.getLevel(options.level, levels.INFO)
   let fmt = options.format || DEFAULT_FORMAT
   let nolog = options.nolog ? createNoLogCondition(options.nolog) : null
+  let levelMapper = options.levelMapper || DEFAULT_LEVEL_MAPPER;
 
   return async (ctx, next) => {
     // mount safety
@@ -75,9 +85,7 @@ function getKoaLogger (logger4js, options) {
 
         // status code response level handling
         if (options.level === 'auto') {
-          level = levels.INFO
-          if (code >= 300) level = levels.WARN
-          if (code >= 400) level = levels.ERROR
+          level = levelMapper(code)
         } else {
           level = levels.getLevel(options.level, levels.INFO)
         }
@@ -88,9 +96,7 @@ function getKoaLogger (logger4js, options) {
       ctx.response.responseTime = new Date() - start
       // status code response level handling
       if (ctx.res.statusCode && options.level === 'auto') {
-        level = levels.INFO
-        if (ctx.res.statusCode >= 300) level = levels.WARN
-        if (ctx.res.statusCode >= 400) level = levels.ERROR
+        level = levelMapper(ctx.res.statusCode)
       }
       if (thislogger.isLevelEnabled(level)) {
         let combinedTokens = assembleTokens(ctx, options.tokens || [])
